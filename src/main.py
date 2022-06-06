@@ -1,5 +1,5 @@
 import chess
-from evaluation import evaluate
+from src.evaluation import evaluate
 
 
 def minimax(board: chess.Board, depth, alpha, beta, color):

@@ -31,22 +31,22 @@ def _eval(board: chess.Board, color):
 
     if color == chess.WHITE:
         for pawn in pawns:
-            centipawns += values.knight_table[63-pawn]
+            centipawns += values.knight_table[63 - pawn]
 
         for knight in knights:
-            centipawns += values.knight_table[63-knight]
+            centipawns += values.knight_table[63 - knight]
 
         for bishop in bishops:
-            centipawns += values.bishop_table[63-bishop]
+            centipawns += values.bishop_table[63 - bishop]
 
         for rook in rooks:
-            centipawns += values.rook_table[63-rook]
+            centipawns += values.rook_table[63 - rook]
 
         for queen in queens:
-            centipawns += values.queen_table[63-queen]
+            centipawns += values.queen_table[63 - queen]
 
         for king in kings:
-            centipawns += values.king_table[63-king]
+            centipawns += values.king_table[63 - king]
 
     if color == chess.BLACK:
         for pawn in pawns:
