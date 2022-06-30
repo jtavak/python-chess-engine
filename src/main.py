@@ -6,7 +6,7 @@ from engine import run_engine
 ENGINE_DEPTH = 5
 MAX_PROCESSES = os.cpu_count()
 
-START_FEN = 'r1bqr1k1/pppp1pp1/1bn2n1p/8/4P2B/1NN5/PPP1QPPP/R3KB1R w KQ - 4 10'
+START_FEN = ''
 HUMAN_COLOR = chess.WHITE
 
 
