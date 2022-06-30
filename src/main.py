@@ -1,76 +1,43 @@
 import chess
-from src.evaluation import evaluate
+from engine import run_engine
+
+ENGINE_DEPTH = 5
+MAX_PROCESSES = 4
+
+START_FEN = ''
+HUMAN_COLOR = chess.WHITE
 
 
-def minimax(board: chess.Board, depth, alpha, beta, color):
-    if depth == 0 or board.is_checkmate():
-        return evaluate(board), None
-
-    if color == chess.WHITE:
-        max_eval = -2000000
-        best_move = None
-        for move in board.legal_moves:
-            board.push(move)
-
-            eval, _ = minimax(board, depth-1, alpha, beta, chess.BLACK)
-
-            if eval > max_eval:
-                max_eval = eval
-                best_move = move
-
-            board.pop()
-
-            if max_eval >= beta:
-                break
-
-            alpha = max(alpha, max_eval)
-
-        return max_eval, best_move
+def play(board: chess.Board, color, depth):
 
     if color == chess.BLACK:
-        min_eval = 2000000
-        best_move = None
-        for move in board.legal_moves:
-            board.push(move)
-
-            eval, _ = minimax(board, depth-1, alpha, beta, chess.WHITE)
-
-            if eval < min_eval:
-                min_eval = eval
-                best_move = move
-
-            board.pop()
-
-            if min_eval <= alpha:
-                break
-
-            beta = min(beta, min_eval)
-
-        return min_eval, best_move
-
-
-def play(board: chess.Board, color):
-
-    if color == chess.BLACK:
-        _, move = minimax(board, 4, -2000000, 2000000, chess.WHITE)
+        _, move = run_engine(board, depth, chess.WHITE, MAX_PROCESSES)
 
         print(move)
         board.push(move)
 
     optimize_color = chess.BLACK if color == chess.WHITE else chess.WHITE
 
-    while not board.is_checkmate():
+    while not board.outcome():
         try:
             board.push_san(input('Input move: '))
         except (ValueError, AssertionError):
             print('Move not legal')
             continue
 
-        _, move = minimax(board, 4, -2000000, 2000000, optimize_color)
+        if board.outcome():
+            break
+
+        _, move = run_engine(board, depth, optimize_color, MAX_PROCESSES)
 
         print(move)
         board.push(move)
 
 
-board = chess.Board()
-play(board, chess.WHITE)
+if __name__ == '__main__':
+    if START_FEN:
+        board = chess.Board(START_FEN)
+    else:
+        board = chess.Board()
+
+    play(board, HUMAN_COLOR, ENGINE_DEPTH)

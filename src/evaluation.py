@@ -2,8 +2,9 @@ import chess
 import values
 
 
-def _eval(board: chess.Board, color):
+def _evaluate(board: chess.Board, color):
 
+    # Get number of each piece
     pawns = board.pieces(chess.PAWN, color)
     knights = board.pieces(chess.KNIGHT, color)
     bishops = board.pieces(chess.BISHOP, color)
@@ -20,6 +21,7 @@ def _eval(board: chess.Board, color):
     queen_count = len(queens)
     king_count = len(kings)
 
+    # Add up material value
     centipawn_material += pawn_count * 100
     centipawn_material += knight_count * 320
     centipawn_material += bishop_count * 330
@@ -29,6 +31,7 @@ def _eval(board: chess.Board, color):
 
     centipawns = centipawn_material
 
+    # Apply piece-position modifiers
     if color == chess.WHITE:
         for pawn in pawns:
             centipawns += values.knight_table[63 - pawn]
@@ -71,6 +74,8 @@ def _eval(board: chess.Board, color):
 
 
 def evaluate(board: chess.Board):
+
+    # Check for win, loss, and draw. Return evaluation accordingly
     if board.outcome():
         if not board.outcome().winner:
             return 0
@@ -79,4 +84,4 @@ def evaluate(board: chess.Board):
         else:
             return -1000000
 
-    return _eval(board, chess.WHITE) - _eval(board, chess.BLACK)
+    return _evaluate(board, chess.WHITE) - _evaluate(board, chess.BLACK)
